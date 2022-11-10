@@ -1,15 +1,16 @@
 <?php
 require_once 'libs/Router.php';
-require_once 'api/apiTripController.php';
+require_once 'api/apiPackageController.php';
 
 // CREO EL ROUTER
 $router = new Router();
 
 // DEFINO LA TABLA DE RUTEO
-$router->addRoute('trips', 'GET', 'ApiTripController', 'getAllTrips');
-$router->addRoute('trips/:ID', 'GET', 'ApiTripController', 'getOneTrip');
-$router->addRoute('trips/:ID', 'DELETE', 'ApiTripController', 'removeTrip');
-$router->addRoute('trips', 'POST', 'ApiTripController', 'insertTrip'); 
+$router->addRoute('packages', 'GET', 'ApiPackageController', 'getAll');
+$router->addRoute('packages/:ID', 'GET', 'ApiPackageController', 'getOnePackage');
+$router->addRoute('packages/:ID', 'DELETE', 'ApiPackageController', 'removePackage');
+$router->addRoute('packages', 'POST', 'ApiPackageController', 'insertPackage'); 
+$router->addRoute('packages/:ID', 'PUT', 'ApiPackageController', 'updatePackage'); 
 //(recurso o accion/:parametro/:otroParametro, verbo, a q controlador voy, a que metodo del controlador voy)
 
 // EJECUTO LA RUTA(SEA CUAL SEA)
