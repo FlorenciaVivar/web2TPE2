@@ -14,7 +14,7 @@ class TravelPackageModel
         // 1. abro conexión a la DB (ya esta abierta por el constructor de la clase)
 
         // 2. ejecuto la sentencia (2 subpasos)
-        $query = $this->db->prepare("SELECT * FROM paquete");
+        $query = $this->db->prepare("SELECT * FROM paquete ORDER BY destino ASC");
         $query->execute();
         // 3. obtengo los resultados
         $travelPackage = $query->fetchAll(PDO::FETCH_OBJ); // devuelve un arreglo de objetos
@@ -56,5 +56,19 @@ class TravelPackageModel
         $query->execute([$destino, $hotel, $comida, $fecha, $id_paquete]);
         return $this->db->lastInsertId();
     }
-   
+
+    public function ordenAscendente(){
+        $query = $this->db->prepare("SELECT * FROM paquete ORDER BY destino ASC");
+        $query->execute();
+        // 3. obtengo los resultados
+        $travelPackage = $query->fetch(PDO::FETCH_OBJ); // devuelve un arreglo de objetos
+        return $travelPackage;
+    }
+    public function ordenDescendente(){
+        $query = $this->db->prepare("SELECT * FROM paquete ORDER BY destino DESC");
+        $query->execute();
+        // 3. obtengo los resultados
+        $travelPackage = $query->fetch(PDO::FETCH_OBJ); // devuelve un arreglo de objetos
+        return $travelPackage;
+    }
 }

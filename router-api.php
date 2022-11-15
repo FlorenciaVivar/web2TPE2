@@ -1,6 +1,8 @@
 <?php
 require_once 'libs/Router.php';
 require_once 'api/apiPackageController.php';
+require_once 'api/apiAuthController.php';
+
 
 // CREO EL ROUTER
 $router = new Router();
@@ -11,6 +13,10 @@ $router->addRoute('packages/:ID', 'GET', 'ApiPackageController', 'getOnePackage'
 $router->addRoute('packages/:ID', 'DELETE', 'ApiPackageController', 'removePackage');
 $router->addRoute('packages', 'POST', 'ApiPackageController', 'insertPackage'); 
 $router->addRoute('packages/:ID', 'PUT', 'ApiPackageController', 'updatePackage'); 
+
+$router->addRoute('auth/token', 'GET', 'ApiAuthController', 'getToken'); 
+// hago un get de auth/token -> authorization->basic Auth ->me da un token-> copio y pego en la funcion delete y en authorization->barear Token pego eso y send
+
 //(recurso o accion/:parametro/:otroParametro, verbo, a q controlador voy, a que metodo del controlador voy)
 
 // EJECUTO LA RUTA(SEA CUAL SEA)
