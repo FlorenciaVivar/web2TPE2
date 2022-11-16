@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-10-2022 a las 20:46:24
+-- Tiempo de generación: 16-11-2022 a las 01:35:41
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -46,6 +46,37 @@ INSERT INTO `aerolinea` (`id_aerolinea`, `nombre`, `imagenAerolinea`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `paquete`
+--
+
+CREATE TABLE `paquete` (
+  `id_paquete` int(11) NOT NULL,
+  `destino` varchar(100) NOT NULL,
+  `hotel` varchar(100) NOT NULL,
+  `comida` varchar(100) NOT NULL,
+  `fecha` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `paquete`
+--
+
+INSERT INTO `paquete` (`id_paquete`, `destino`, `hotel`, `comida`, `fecha`) VALUES
+(1, 'Barcelona', 'Mulen Hotel', 'Todo Incluido', '01/01/23'),
+(2, 'Cancun', 'Mulen Hotel', 'Desayuno', '01/01/23'),
+(3, 'Hawai', 'Mulen Hotel', 'Cena', '01/01/23'),
+(5, 'Mar del plata', 'Mulen Hotel', 'Cena', '01/01/23'),
+(7, 'Tandil', 'Mulen Hotel', 'Cena', '01/01/23'),
+(8, 'Buenos Aires', 'Libertador Hotel', 'Merienda', '01/01/23'),
+(9, 'Buenos Aires', 'Libertador Hotel', 'Merienda', '01/10/24'),
+(10, 'Buenos Aires', 'Qatar Hotel', 'Cena', '01/10/24'),
+(11, 'Paris', 'Mulen Hotel', 'Cena', '01/01/23'),
+(12, 'Paris', 'Mulen Hotel', 'Cena', '01/01/23'),
+(13, 'Paris', 'Mulen Hotel', 'Cena', '01/01/23');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `user`
 --
 
@@ -83,10 +114,8 @@ CREATE TABLE `viaje` (
 --
 
 INSERT INTO `viaje` (`id`, `destino`, `fecha`, `precio`, `imagenViaje`, `descripcionDestino`, `id_aerolinea_fk`) VALUES
-(36, 'tandil', '12/5/22', 150000, 'imgs/viajes/634d9b41d7499.jpg', 'Cancún está ubicado en la esquina noreste de la Península de Yucatán en México. Esta ciudad está situada en la costa del Mar Caribe a 11 metros por encima del nivel del mar, a 21.17 grados de latitud y a -86.85 de longitud.', 4),
-(39, 'cancun', '12/5/22', 150000, 'imgs/viajes/634d99fbb6625.jpg', 'Cancún está ubicado en la esquina noreste de la Península de Yucatán en México. Esta ciudad está situada en la costa del Mar Caribe a 11 metros por encima del nivel del mar, a 21.17 grados de latitud y a -86.85 de longitud.', 15),
-(43, 'Barcelona', '12/5/22', 150, 'imgs/viajes/634cc105b5a03.jpg', 'Cancún está ubicado en la esquina noreste de la Península de Yucatán en México. Esta ciudad está situada en la costa del Mar Caribe a 11 metros por encima del nivel del mar, a 21.17 grados de latitud y a -86.85 de longitud.', 15),
-(44, 'Barcelona', '12/5/22', 150000, 'imgs/viajes/634d9b016d260.jpg', 'Cancún está ubicado en la esquina noreste de la Península de Yucatán en México. Esta ciudad está situada en la costa del Mar Caribe a 11 metros por encima del nivel del mar, a 21.17 grados de latitud y a -86.85 de longitud.', 15);
+(50, 'Barcelona', '12/5/22', 150000, 'imgs/viajes/635300992ace8.jpg', 'Cancún está ubicado en la esquina noreste de la Península de Yucatán en México. Esta ciudad está situada en la costa del Mar Caribe a 11 metros por encima del nivel del mar, a 21.17 grados de latitud y a -86.85 de longitud.', 7),
+(51, 'Barcelona', '12/5/22', 150000, 'imgs/viajes/635300b805653.jpg', 'Cancún está ubicado en la esquina noreste de la Península de Yucatán en México. Esta ciudad está situada en la costa del Mar Caribe a 11 metros por encima del nivel del mar, a 21.17 grados de latitud y a -86.85 de longitud.', 4);
 
 --
 -- Índices para tablas volcadas
@@ -97,6 +126,12 @@ INSERT INTO `viaje` (`id`, `destino`, `fecha`, `precio`, `imagenViaje`, `descrip
 --
 ALTER TABLE `aerolinea`
   ADD PRIMARY KEY (`id_aerolinea`);
+
+--
+-- Indices de la tabla `paquete`
+--
+ALTER TABLE `paquete`
+  ADD PRIMARY KEY (`id_paquete`);
 
 --
 -- Indices de la tabla `user`
@@ -122,6 +157,12 @@ ALTER TABLE `aerolinea`
   MODIFY `id_aerolinea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT de la tabla `paquete`
+--
+ALTER TABLE `paquete`
+  MODIFY `id_paquete` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
@@ -131,7 +172,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `viaje`
 --
 ALTER TABLE `viaje`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- Restricciones para tablas volcadas

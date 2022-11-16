@@ -19,28 +19,129 @@ class ApiPackageController{
    private function getData() {
         return json_decode($this->data);
    // json_decode ->  convierte el string recibido a JSON y devuelve un objecto JSON
-    }
+}
 
-//TRAE TODOS LOS PAQUETES
-    public function getAll($params = null){
-       
-        $packages = $this->model->getAll();
-        //var_dump($paquetes);
-        $this->view->response($packages, 200); 
-      
-        if(isset($_GET['order']) && isset($_GET['sort'])){
-            if (($_GET['sort']=="destino") || ($_GET['sort']=="DESTINO")){
-                if(($_GET['order']=="ASC") || ($_GET['order']=="asc")){
-                    $packages = $this->model->ordenAscendente();
-                    }
-                else if(($_GET['order']=="DESC") || ($_GET['order']=="desc")){
-                    $packages = $this->model->ordenDescendente();
-                    }  
-            }
+// TRAE TODOS LOS PAQUETES
+public function getAll(){
+    if (isset($_GET['order']) && isset($_GET['sort'])&& isset($_GET['limit']) && isset($_GET['page'])&&
+    isset($_GET['destino'])){
+        $packages = $this->getAllSortOrder2();
+        $packages = $this->filter($packages,$_GET['destino']);
+        $result = $this->paginate($packages,$_GET['limit'],$_GET['page']);
+        $this->view->response($result, 200);  
+        die();
+    }  
+    else if(isset($_GET['order']) && isset($_GET['sort'])&&isset($_GET['destino'])){
+        $packages = $this->getAllSortOrder2();
+        $packages = $this->filter($packages,$_GET['destino']);
+        if($packages){
+            $this->view->response($packages, 200);  
+        }
+        else{
+            $this->view->response("no hay paquetes con ese destino", 404);  
+            die();
+        }
+        }
+        if(isset($_GET['order']) && isset($_GET['sort'])&& isset($_GET['limit']) && isset($_GET['page'])){
+            $packages = $this->getAllSortOrder2();
+            $result = $this->paginate(   $packages    ,$_GET['limit'],$_GET['page']);
+            $this->view->response($result, 200);  
+        }
+        if(isset($_GET['limit']) && isset($_GET['page'])&&isset($_GET['destino'])){
+            $packages = $this->getAllPackages();
+            $packages = $this->filter($packages,$_GET['destino']);
+            $result = $this->paginate($packages,$_GET['limit'],$_GET['page']);
+            $this->view->response($result, 200);  
+            die();
+        }        
+        else if(isset($_GET['destino'])){
+            $packages = $this->getAllPackages();
+            $packages = $this->filter($packages,$_GET['destino']);
+            $this->view->response($result, 200);  
+        }
+        else if (isset($_GET['limit']) && isset($_GET['page'])){
+            $packages = $this->getAllPackages();
+            $result = $this->paginate($packages,$_GET['limit'],$_GET['page']);
+            $this->view->response($result, 200);  
+        }
+        else if(isset($_GET['order']) && isset($_GET['sort'])){
+            $packages = $this->getAllSortOrder();
+        }
+        else{
+            $packages = $this->getAllPackages();
+            $this->view->response($packages, 200); 
         }
     }
+    
+    function getAllPackages(){
+        $packages = $this->model->getAll();
+        return $packages;
+    }
+    
+    
+    public function paginate($packages,$limit,$page){
+        $paginacion = $this->verifyPagination2($limit,$page);
+        if($paginacion){
+            $from = ($page - 1) * $limit;
+            $result = array_slice($packages, $from, $limit);
+            return $result;
+        }
+        else{
+            $this->view->response("Error en los parametros de paginacion", 400); 
+            die();
+        }
+             
+}
+//PAGINACION
+function verifyPagination2($limit,$page){
+        if ( is_numeric($limit) && is_numeric($page) && ($limit > 0) && ($page > 0) ) {
+            return true;
+        } else {
+            $this->view->response("Error en los parametros de paginacion", 400); 
+            die();
+}
+}
 
-//TRAE UN PAQUETE 
+// public function verifyPagination(){
+//         if (isset($_GET['limit']) && isset($_GET['page'])) {
+//             if ( is_numeric($_GET['limit']) && is_numeric($_GET['page']) && ($_GET['limit'] > 0) && ($_GET['page'] > 0) ) {
+//                 return true;
+//             } else {
+//                 $this->view->response("No hay paquetes en esta página", 404); 
+//                 return false;
+//             }
+//     }
+// }
+
+// SORT Y ORDER
+    public function getAllSortOrder(){
+            if(isset($_GET['order']) && isset($_GET['sort'])){
+                if (($_GET['sort']=="destino") || ($_GET['sort']=="hotel") || ($_GET['sort']=="comida") || ($_GET['sort']=="fecha")){
+                    if(($_GET['order']=="asc") || ($_GET['order']=="desc")){
+                        $order = $_GET['order'];
+                        $sort = $_GET['sort'];
+                        $packages = $this->model->ordenAscDescSort($order, $sort);
+                        $this->view->response($packages, 200); 
+                    }  
+                }
+            }
+    }
+
+    public function getAllSortOrder2(){
+        if(isset($_GET['order']) && isset($_GET['sort'])){
+            if (($_GET['sort']=="destino") || ($_GET['sort']=="hotel") || ($_GET['sort']=="comida") || ($_GET['sort']=="fecha")){
+                if(($_GET['order']=="asc") || ($_GET['order']=="desc")){
+                    $order = $_GET['order'];
+                    $sort = $_GET['sort'];
+                    $packages = $this->model->ordenAscDescSort($order, $sort);
+                    return $packages;
+                    }  
+                }
+            }
+    }
+
+
+//OBTENER UN PAQUETE 
     public function getOnePackage($params = null){
         $id = $params[':ID'];
         //var_dump($id);
@@ -50,6 +151,7 @@ class ApiPackageController{
         else
         $this->view->response("Paquete con id=$id no encontrado ", 404);
     }
+
 //ELIMINA UN PAQUETE
     public function removePackage ($params = null){
         $id = $params[':ID'];
@@ -57,19 +159,17 @@ class ApiPackageController{
             $this->view->response("No estas logueado", 401);
             return;
         }
-
         $package = $this->model->getOnePackage($id);
-
         if ($package) {
             $this->model->deleteTravelPackageModel($id);
-            $this->view->response("Viaje con id=$id eliminado con éxito", 200);
+            $this->view->response( "Paquete con id=$id eliminado con éxito", 200);
         }
         else 
-            $this->view->response("Viaje id=$id no encontrado", 404);
-
+            $this->view->response("Paquete id=$id no encontrado", 404);
     }
+
 //INSERTA UN PAQUETE
-    public function insertPackage($params = null){
+    public function insertPackage(){
         if(!$this->authHelper->isLoggedIn()){
             $this->view->response("No estas logueado", 401);
             return;
@@ -84,7 +184,8 @@ class ApiPackageController{
             $this->view->response($paquete, 201);
        }
     }
-  //MODIFICA UN PAQUETE
+
+//MODIFICA UN PAQUETE
   public function updatePackage($params = []) {
     $id_paquete = $params[':ID'];
     if(!$this->authHelper->isLoggedIn()){
@@ -105,5 +206,18 @@ class ApiPackageController{
     else 
         $this->view->response("Paquete de viaje con id=$id_paquete not found", 404);
 }
-
+public function filter($packages,$destino){
+    $aux = [];
+    foreach ($packages as $package) {
+        if ($package->destino == $destino) {
+            array_push($aux, $package);
+        }
+    }
+    if($aux){
+        return $aux;
+    }
+    else{
+        return null;
+    }
+}
 }
