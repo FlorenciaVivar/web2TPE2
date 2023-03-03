@@ -29,7 +29,7 @@ public function getAll(){
         $packages = $this->filter($packages,$_GET['destino']);
         $result = $this->paginate($packages,$_GET['limit'],$_GET['page']);
         $this->view->response($result, 200);  
-        die();
+        return;
     }  
     else if(isset($_GET['order']) && isset($_GET['sort'])&&isset($_GET['destino'])){
         $packages = $this->getAllSortOrder2();
@@ -39,7 +39,7 @@ public function getAll(){
         }
         else{
             $this->view->response("no hay paquetes con ese destino", 404);  
-            die();
+            return;
         }
         }
         if(isset($_GET['order']) && isset($_GET['sort'])&& isset($_GET['limit']) && isset($_GET['page'])){
@@ -52,12 +52,12 @@ public function getAll(){
             $packages = $this->filter($packages,$_GET['destino']);
             $result = $this->paginate($packages,$_GET['limit'],$_GET['page']);
             $this->view->response($result, 200);  
-            die();
+            return;
         }        
         else if(isset($_GET['destino'])){
             $packages = $this->getAllPackages();
             $packages = $this->filter($packages,$_GET['destino']);
-            $this->view->response($result, 200);  
+            $this->view->response($packages, 200);  
         }
         else if (isset($_GET['limit']) && isset($_GET['page'])){
             $packages = $this->getAllPackages();
@@ -88,7 +88,7 @@ public function getAll(){
         }
         else{
             $this->view->response("Error en los parametros de paginacion", 400); 
-            die();
+            return;
         }
              
 }
