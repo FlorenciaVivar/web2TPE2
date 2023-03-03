@@ -25,10 +25,8 @@ class TravelPackageModel
     public function getOnePackage($id_paquete)
     {
         $query = $this->db->prepare('SELECT * FROM paquete WHERE id_paquete=?');
-        // echo $id;
         $query->execute([$id_paquete]);
         $result =  $query->fetch(PDO::FETCH_OBJ);
-        // var_dump($result); 
         return $result;
     }
 
@@ -50,7 +48,6 @@ class TravelPackageModel
     /*   EDITA UNA PAQUETE   */
     public function editTravelPackageModel($id_paquete, $destino, $hotel, $comida, $fecha)
     {
-        // echo 'holaaa';
         $query = $this->db->prepare("UPDATE paquete SET destino=?, hotel=?, comida=?, fecha=? WHERE id_paquete=?");
         $query->execute([$destino, $hotel, $comida, $fecha, $id_paquete]);
         return $this->db->lastInsertId();

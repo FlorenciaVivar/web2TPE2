@@ -32,7 +32,6 @@ class TripModel
         FROM viaje a 
         INNER JOIN aerolinea b 
         ON a.id_aerolinea_fk = id_aerolinea WHERE id=?');
-        // echo $id;
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_OBJ);
     }
@@ -56,8 +55,6 @@ class TripModel
     /*   EDITA UN VIAJE   */
     public function editTripModel($id, $destino, $fecha, $precio, $imagenViaje, $descripcionDestino, $airline)
     {
-        // echo 'holaaa';
-
         $pathImg = $this->uploadImage($imagenViaje);
         $query = $this->db->prepare("UPDATE viaje SET destino=?, fecha=?, precio=?, imagenViaje=?, descripcionDestino=?, id_aerolinea_fk=? WHERE id=?");
         $query->execute([$destino, $fecha, $precio, $pathImg, $descripcionDestino, $airline, $id]);

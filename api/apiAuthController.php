@@ -18,10 +18,9 @@ class ApiAuthController{
         $this->authHelper = new AuthApiHelper();
         // lee el body del request
         $this->data = file_get_contents("php://input");
-
     }
   
-    private function getData() {
+    public function getData() {
         return json_decode($this->data);
     }
 

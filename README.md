@@ -9,8 +9,6 @@ Se trata de una API REStfull,
 ## Importar base de datos
 Para su uso se debe importar la base de datos db_tpe.sql desde PHPMyAdmin u otro.
 
-
-
 ## Prueba con Postman o similar
 El endpoint de la API es: http://localhost/proyectos/web2/TPE2Web2/api/packages
 
