@@ -56,7 +56,6 @@ class TravelPackageModel
     public function ordenAscDescSort($order, $sort){
         $query = $this->db->prepare("SELECT * FROM paquete ORDER BY $sort $order");
         $query->execute();
-        // 3. obtengo los resultados
         $travelPackage = $query->fetchAll(PDO::FETCH_OBJ); // devuelve un arreglo de objetos
         return $travelPackage;
     }

@@ -59,7 +59,7 @@ class AirlineController
     function editAirlineController($id)
     {
         session_start();
-        //barrera para el que este logueado
+        //barrera para el que este logueado 
         $this->authHelper->checkLoggedIn();
         if (!empty($_POST['nombre'])) {
             if ($_FILES['imagenAerolinea']['type'] == "image/jpg" || $_FILES['imagenAerolinea']['type'] == "image/jpeg" || $_FILES['imagenAerolinea']['type'] == "image/png") {

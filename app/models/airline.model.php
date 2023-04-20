@@ -50,7 +50,7 @@ class AirlineModel
     /*   EDITA UNA AEROLINEA   */
     public function editAirlineModel($id_aerolinea, $nombre, $imagenAerolinea)
     {
-        // echo 'holaaa';
+     
         $pathImg = $this->uploadImage($imagenAerolinea);
         $query = $this->db->prepare("UPDATE aerolinea SET nombre=?, imagenAerolinea=? WHERE id_aerolinea=?");
         $query->execute([$nombre, $pathImg, $id_aerolinea]);
